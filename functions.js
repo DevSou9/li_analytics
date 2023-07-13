@@ -1,7 +1,7 @@
 const axios = require('axios');
 const apiUrl = 'https://api.awsli.com.br/v1/produto';
-const moment = require('moment');
-const pedidosTeste = require('./pedidosTeste');
+//const moment = require('moment');
+const pedidosJSON = require('./pedidosJSON.json');
 const fs = require('fs');
 const { promisify } = require('util');
 require('dotenv').config();
@@ -75,7 +75,7 @@ axios.post(apiUrl, requestBody, { headers })
 function getPedidoLI(dataInicial, dataFinal){
   const readFileAsync = promisify(fs.readFile);
 
-  return readFileAsync('./pedidosTeste.json', 'utf8')
+  return readFileAsync('./pedidosJSON.json', 'utf8')
     .then(dados => {
       const parseData = JSON.parse(dados);
       //console.log(parseData);
