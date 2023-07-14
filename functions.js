@@ -71,6 +71,29 @@ axios.post(apiUrl, requestBody, { headers })
   });
 }
 
+function inserirDados(dataInicial, dataFinal) {
+  return getPedidoLI(dataInicial, dataFinal)
+    .then(dados => {
+      return conectarMongoDB()
+        .then(db => {
+          return db.collection('pedidos').insertMany(dados);
+        })
+        .then(result => {
+          console.log(`${result.insertedCount} documentos inseridos com sucesso.`);
+        })
+        .catch(error => {
+          console.error('Erro ao conectar ou inserir os dados:', error);
+          throw error;
+        });
+    })
+    .catch(error => {
+      console.error('Erro ao obter os dados:', error);
+      throw error;
+    });
+}
+
+inserirDados('a', 'b');
+
 //Função em desenvolvimento para trabalhar com os Pedidos Loja Integrada
 function getPedidoLI(dataInicial, dataFinal){
   const readFileAsync = promisify(fs.readFile);
