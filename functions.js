@@ -15,14 +15,12 @@ const app = express();
 
 app.use(express.urlencoded({extended:true}));
 
+/* o "return db" retorna a promise para o "return client.connect()", e o "return client.connect()" por sua vez retorna a promise para a function conectarMongoDB(). Entendi certo?*/
 function conectarMongoDB() {
-    console.log(`Entrou na conectarMongoDB`);
-    cliente.connect(err => {
-    console.log(`Erro de conexao: ${err}`);
-  })
+  return cliente.connect()
     .then(client => {
       console.log('Conectado ao MongoDB');
-      const db = client.db('ecommerceanalytics');      
+      const db = client.db('ecommerceanalytics');
       return db;
     })
     .catch(error => {
@@ -31,7 +29,13 @@ function conectarMongoDB() {
     });
 }
 
-conectarMongoDB();
+conectarMongoDB()
+ .then(db =>{
+  console.log(`Conectado ao MongoDB`);
+ })
+ .catch(err =>{
+  console.log(`err: ${err}`);
+ })
 
 function addProduto(){
 const headers = {
@@ -102,7 +106,7 @@ function getPedidoLI(dataInicial, dataFinal){
     .then(dados => {
       const parseData = JSON.parse(dados);
       //console.log(parseData);
-      return parseData;
+      return parseData.pedidos;
     })
     .catch(error => {
       console.error(error);
