@@ -28,7 +28,7 @@ function conectarMongoDB() {
       throw error;
     });
 }
-
+/*
 conectarMongoDB()
  .then(db =>{
   console.log(`Conectado ao MongoDB`);
@@ -36,6 +36,29 @@ conectarMongoDB()
  .catch(err =>{
   console.log(`err: ${err}`);
  })
+*/
+function desconectarMongoDB(){
+  cliente.close()
+    .then(() =>{
+      console.log(`Conexao com mongoDB finalizada`);
+    })
+    .catch(err =>{
+      console.log(`Erro ao finalizar conexao com mongoDB: ${err}`);
+      throw err;
+    })
+}
+
+function limparColecaoPedidos(db) {
+  return db.collection('pedidos').deleteMany({})
+    .then(result => {
+      console.log(`${result.deletedCount} documentos removidos com sucesso.`);
+    })
+    .catch(error => {
+      console.error('Erro ao limpar a coleção de pedidos:', error);
+      throw error;
+    });
+}
+
 
 function addProduto(){
 const headers = {
@@ -84,6 +107,7 @@ function inserirDados(dataInicial, dataFinal) {
         })
         .then(result => {
           console.log(`${result.insertedCount} documentos inseridos com sucesso.`);
+          desconectarMongoDB()
         })
         .catch(error => {
           console.error('Erro ao conectar ou inserir os dados:', error);
