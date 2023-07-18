@@ -1,0 +1,36 @@
+doctype html
+html
+  head
+    title Meu Gráfico
+  body
+    h1 Meu Gráfico
+    canvas#meuGrafico(width='400', height='200')
+    script(src='https://cdn.jsdelivr.net/npm/chart.js')
+    script.
+      const dados = !{JSON.stringify(dadosGrafico)};
+      const labels = dados.map(item => item.id);
+      const valores = dados.map(item => item.valor_total);
+
+      const ctx = document.getElementById('meuGrafico').getContext('2d');
+      const meuGrafico = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Vendas por Produto',
+              data: valores,
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });

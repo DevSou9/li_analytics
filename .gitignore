@@ -2,3 +2,5 @@ algoritmo.md
 .env
 functionsAdd.js
 pedidosJSON.json
+node_modules/
+functions/
